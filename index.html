@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Box Breathing Visual</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Lexend', sans-serif;
+      background-color: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .breathing-container {
+      position: relative;
+      width: 320px;
+      height: 300px;
+      background-color: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-direction: column;
+      padding: 10px 0;
+    }
+
+    .title-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 12px;
+      margin-bottom: 6px;
+    }
+
+    .title-label {
+      font-size: 1.6rem;
+      color: #4A7A92;
+      font-weight: bold;
+      margin: 0;
+      line-height: 1.1;
+    }
+
+    .subtitle-label {
+      font-size: 1.2rem;
+      color: #879B8D;
+      font-weight: bold;
+      margin: 0;
+      line-height: 1.1;
+    }
+
+    .circle {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: rgba(74, 122, 146, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 4s ease-in-out, background-color 4s ease-in-out;
+    }
+
+    .countdown {
+      font-size: 4rem;
+      color: #fff;
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    .phase-label {
+      font-size: 2.2rem;
+      color: #756A85;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="breathing-container">
+    <div class="title-wrapper">
+      <div class="title-label">Feeling Anxious?</div>
+      <div class="subtitle-label">Let's Breathe</div>
+    </div>
+    <div class="circle" id="circle">
+      <div class="countdown" id="countdown">4</div>
+    </div>
+    <div class="phase-label" id="phase">Breathe In</div>
+  </div>
+
+  <script>
+    const phaseLabel = document.getElementById("phase");
+    const countdown = document.getElementById("countdown");
+    const circle = document.getElementById("circle");
+
+    const phases = [
+      { label: "Breathe In", duration: 4, action: () => circle.style.transform = "scale(1.5)" },
+      { label: "Hold", duration: 4, action: () => circle.style.transform = "scale(1.5)" },
+      { label: "Breathe Out", duration: 4, action: () => circle.style.transform = "scale(1)" },
+      { label: "Hold", duration: 4, action: () => circle.style.transform = "scale(1)" }
+    ];
+
+    let phaseIndex = 0;
+
+    function runPhase() {
+      const current = phases[phaseIndex];
+      phaseLabel.innerText = current.label;
+      current.action();
+      let count = current.duration;
+      countdown.innerText = count;
+
+      const interval = setInterval(() => {
+        count--;
+        countdown.innerText = count;
+        if (count <= 0) {
+          clearInterval(interval);
+          phaseIndex = (phaseIndex + 1) % phases.length;
+          runPhase();
+        }
+      }, 1000);
+    }
+
+    runPhase();
+  </script>
+</body>
+</html>
